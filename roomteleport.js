@@ -7,8 +7,8 @@ import {
   
   
   const extensionInfo = {
-    name: "HabCord",
-    description: "Send habbo messages from discord",
+    name: "Roomtele",
+    description: "Teleport to and from rooms with a command",
     version: "1.0.0",
     author: "floppidity",
   };
