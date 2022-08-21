@@ -10,4 +10,3 @@ const extensionInfo = {
 let ext = new Extension(extensionInfo);
 ext.run();
 
-
