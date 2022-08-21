@@ -98,7 +98,7 @@ ext.interceptByNameOrHash(HDirection.TOSERVER, "Chat", hMessage => {
     ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"/wlclear - Clears the whitelist."}{i:0}{i:23}{i:0}{i:-1}`));
     ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"/list - Lists the current whitelist."}{i:0}{i:23}{i:0}{i:-1}`));
     ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"/help - Displays this help message."}{i:0}{i:23}{i:0}{i:-1}`));
-    ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"/wlroom - Adds all users in the room to the whitelist."}{i:0}{i:23}{i:0}{i:-1}`));
+    ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"/wlroom - Adds all users who enter the room after you to the whitelist."}{i:0}{i:23}{i:0}{i:-1}`));
   }
 })
 
