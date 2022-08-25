@@ -1,4 +1,6 @@
-import { Extension, HPacket, HDirection, HMessage, HEntity } from "gnode-api";
+import { Extension, HPacket, HDirection,  } from "gnode-api";
+import {GlobalKeyboardListener} from "node-global-key-listener";
+const v = new GlobalKeyboardListener();
 
 const extensionInfo = {
   name: "FlopScript",
@@ -10,22 +12,18 @@ const extensionInfo = {
 let ext = new Extension(extensionInfo);
 ext.run();
 
-//{in:HandItemReceived}{i:1242}{i:8}
-ext.interceptByNameOrHash(HDirection.TOCLIENT, 'HandItemReceived', hItem => {
-  const packet = hItem.getPacket();
-  const userId = packet.readInteger();
+var oldMessage = "";
 
-  // {out:PassCarryItem}{i:64336848}
-  ext.sendToServer(new HPacket(`{out:PassCarryItem}{i:${users.get(userId)}}`));
+ext.interceptByNameOrHash(HDirection.TOSERVER, "Chat", (hMessage)=>{
+    const packet = hMessage.getPacket();
+    var message = packet.readString();
+    // store the old message
+    oldMessage = message;
 })
 
-ext.interceptByNameOrHash(HDirection.TOSERVER, "LookTo", look => {
-  look.blocked = true;
-})
-
-let users = new Map();
-ext.interceptByNameOrHash(HDirection.TOCLIENT, 'Users', hMessage => {
-  HEntity.parse(hMessage.getPacket())
-    .forEach(u => users.set(u.index, u.name));
+v.addListener(function (e, down) {
+    if (e.state == "DOWN" && e.name == "UP ARROW") {
+        // send the old message to the server
+        ext.sendToServer(new HPacket(`{out:Chat}{s:"${oldMessage}"}{i:0}{i:2}`));
+    }
 });
-
