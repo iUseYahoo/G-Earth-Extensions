@@ -95,19 +95,6 @@ ext.interceptByNameOrHash(HDirection.TOSERVER, "Chat", hMessage => {
   }
 })
 
-ext.interceptByNameOrHash(HDirection.TOCLIENT, "Doorbell", hUser => {
-  const packet = hUser.getPacket();
-  const username = packet.readString();
-
-  if (whitelist.includes(username)) {
-    setTimeout(() => {
-      ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"${username} is ringing the doorbell."}{i:0}{i:23}{i:0}{i:-1}`));
-      ext.sendToServer(new HPacket(`{out:LetUserIn}{s:"${username}"}{b:true}`));
-      ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"${username} was let in."}{i:0}{i:23}{i:0}{i:-1}`));
-    }, 500);
-  }
-})
-
 let users = new Map();
 ext.interceptByNameOrHash(HDirection.TOCLIENT, 'Users', hMessage => {
   HEntity.parse(hMessage.getPacket())

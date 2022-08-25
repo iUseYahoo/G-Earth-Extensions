@@ -5,7 +5,6 @@ import {
   HMessage
 } from "gnode-api";
 
-
 const extensionInfo = {
   name: "FlopScript",
   description: "Floppidity's Script.",
@@ -16,6 +15,11 @@ const extensionInfo = {
 let ext = new Extension(extensionInfo);
 ext.run();
 
+var whitelist = [];
+
+if (fs.existsSync("./whitelist.json")) {
+  whitelist = JSON.parse(fs.readFileSync("./whitelist.json", "utf8"));
+}
 
 ext.interceptByNameOrHash(HDirection.TOSERVER, "GetSelectedBadges", hMessage => {
   // {out:GetSelectedBadges}{i:67041357}
@@ -23,9 +27,9 @@ ext.interceptByNameOrHash(HDirection.TOSERVER, "GetSelectedBadges", hMessage => 
   const packet = hMessage.getPacket();
   const id = packet.readInteger();
   
-  if (id === 67041357) {
-    ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"Fam, You cannot kick yourself."}{i:0}{i:23}{i:0}{i:-1}`));
-  } else { 
+  if (whitelist.includes(id)) {
+    ext.sendToClient(new HPacket(`{in:Chat}{i:-1}{s:"Fam, You cannot kick whitelist users."}{i:0}{i:23}{i:0}{i:-1}`));
+  } else {
     console.log(`Clicked ID: ${id}`)
     
     // {out:KickUser}{i:31210849}
