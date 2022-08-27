@@ -2,6 +2,8 @@ import { Extension, HPacket, HDirection,  } from "gnode-api";
 import "clipboardy";
 import clipboard from "clipboardy";
 
+// npm i clipboardy
+
 const extensionInfo = {
   name: "FlopScript",
   description: "Floppidity's Script.",
